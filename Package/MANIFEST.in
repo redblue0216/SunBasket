@@ -1,0 +1,3 @@
+include sunbasket/doc/README.mdown
+include sunbasket/sunbasket_config.yaml
+graft sunbasket/test

@@ -1,0 +1,181 @@
+# SunBasket-算法信息存储管理工具
+
+![shields_version](/static/shields_version.svg)    ![shields_license](/static/shields_license.svg)    ![shields_author](/static/shields_author.svg)    ![shiedls_python](/static/shields_python.svg)
+
+![sunbasketsymbol](/static/sunbasketsymbol.JPG)
+
+
+## 介绍
++ SunBasket是一款嵌入式算法辅助管理工具，主要提供五类信息管理，包括算法、模型、参数、应用程序和数据、模型存储管理和算法日志。主要技术使用SQLite、ORM和logging，设计模式为工厂模式。
+
+
+## 安装
+SunBasket采用Python开发，得益于Python良好的社区环境，安装支持Pythonic风格的各种管理器。
+
+```bash
+	$ pip install sunbasket-0.1-xxxxxxxxxxxx.whl
+```
+
+
+## 快速指南
++ SunBasket提供python-sdk的日志转发至SQLite的日志记录功能，算法、模型、参数、应用、数据的信息管理功能以及模型的存储功能,以下是SunBasket主程脚本示例：
+
+```python
+import logging
+from sunbasket.handler import SQLiteHandler
+from sunbasket.data import AlgorithmInfoManager,ModelInfoManager,ParameterInfoManager,ApplicationInfoManager,DataInfoManager,ModelStoreManager,serialize_data,deserialize_data
+
+
+
+####### 手动日志测试
+### 创建日志操作对象
+logger = logging.getLogger()
+### 设置日志操作对象的日志等级
+logger.setLevel(logging.INFO)
+### 创建一个SQLite处理器
+# SQLiteHandler = SQLiteHandler(log_database='sqlite:///E:\\workspace\\SunBasket\\Demo\\test.db')
+SQLiteHandler = SQLiteHandler()
+### 设置SQLite处理器的日志等级
+SQLiteHandler.setLevel(logging.INFO)
+### 向日志操作对象添加SQLite处理器
+logger.addHandler(SQLiteHandler)
+logger.info('start test log handler')
+logger.warning('this is a warning log')
+
+
+
+####### 信息管理测试
+### 连接数据库 
+connect_info = 'sqlite:///E:\\workspace\\SunBasket\\Demo\\test.db'
+### 算法信息管理
+algorithm_info_data_dict = {
+	'name': 'test',
+	'version': 'v001',
+	'summary': 'test summary',
+	'config': 'test config',
+	'remark': 'test remark',
+	'homepage': 'test homepage',
+	'author': 'shihua',
+	'authoremail': 'xxxxx@xxx.com',
+	'license': 'MIT',
+	'requires': 'numpy,pandas',
+	'requiredby': 'xxxx'
+}
+algorithm_info = AlgorithmInfoManager(connect_info=connect_info,data_dict=algorithm_info_data_dict)
+algorithm_info.add_data()
+
+
+### 模型信息管理
+model_info_data_dict = {
+	'name': 'test',
+	'version': 'v001',
+	'summary': 'test summary',
+	'config': 'test config',
+	'remark': 'test remark',
+	'requires': 'numpy,pandas',
+	'data': 'test data',
+	'algorithm': 'test algorithm'
+}
+model_info = ModelInfoManager(connect_info=connect_info,data_dict=model_info_data_dict)
+model_info.add_data()
+
+
+### 参数信息管理
+parameter_info_data_dict = {
+	'name': 'test',
+	'version': 'v001',
+	'summary': 'test summary',
+	'config': 'test config',
+	'remark': 'test remark',
+	'datatype': 'test datatype',
+	'requiredby': 'xxxx'
+}
+parameter_info = ParameterInfoManager(connect_info=connect_info,data_dict=parameter_info_data_dict)
+parameter_info.add_data()
+
+
+### 应用信息管理
+application_info_data_dict = {
+	'name': 'test',
+	'version': 'v001',
+	'summary': 'test summary',
+	'config': 'test config',
+	'remark': 'test remark',
+	'requires': 'test requires',
+	'project': 'xxxx'
+}
+application_info = ApplicationInfoManager(connect_info=connect_info,data_dict=application_info_data_dict)
+application_info.add_data()
+
+
+### 数据信息管理
+data_info_data_dict = {
+	'name': 'test',
+	'version': 'v001',
+	'summary': 'test summary',
+	'config': 'test config',
+	'remark': 'test remark',
+	'requireby': 'test requiredby',
+	'datatype': 'test datatype',
+	'project': 'xxxx'
+}
+data_info = DataInfoManager(connect_info=connect_info,data_dict=data_info_data_dict)
+data_info.add_data()
+
+
+
+####### 存储管理测试
+### 模型存储管理
+class TestModel(object):
+
+	def __init__(self,name):
+		self.name = name
+		self.arg = 150
+
+	def add(self,a,b):
+		return a+b
+test_model = TestModel(name='testmodel')
+### 序列化数据对象
+serialized_data = serialize_data(data=test_model) 
+model_store_data_dict = {
+	'name': 'test',
+	'version': 'v001',
+	'summary': 'test summary',
+	'config': 'test config',
+	'remark': 'test remark',
+	'data': serialized_data
+}
+model_store = ModelStoreManager(connect_info=connect_info,data_dict=model_store_data_dict)
+model_store.add_data()
+
+
+### 读取目标模型
+tmp_model = model_store.get_model_data(connect_info=connect_info,name='test',version='v001')
+### 反序列化数据对象
+tmp_model_data = deserialize_data(serialized_data=tmp_model.data)
+print(tmp_model_data.name,tmp_model_data.arg,tmp_model_data.add(1,2))
+```
+
+
+## 设计
++ 基于python基础包logging开发日志转发处理器
++ 使用SQLite作为日志存储后端
++ 支持日志过滤和日志信息选择
++ 管理算法、模型、参数、应用和数据五大类信息
++ 模型的存储管理
+
+
+### 技术列表
++ 数据库-SQLite
++ ORM
++ logging
++ 配置文件-yaml
++ 继承重写
++ 静态方法
++ 对象化
+
+
+### 设计UML图
+以下是设计的UML图：
+![sunbasketuml](/static/SunBasketUML.png)
+

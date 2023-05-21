@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: sunbasket
+Version: 0.1.1
+Summary:  Sunbasket is an embedded algorithmic auxiliary management tool that mainly provides five categories of information management, including algorithm, model, parameter, application, and data, model storage management, and algorithm logging. The main technologies use SQLite, ORM, and logging, and the design mode is factory mode.
+Author: shihua
+Author-email: 15021408795@163.com
+License: MIT
+Requires-Python: >=3.10.9

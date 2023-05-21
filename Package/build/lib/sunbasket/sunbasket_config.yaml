@@ -1,0 +1,4 @@
+SAVE_ATTR: ['filename','lineno','module','msg','levelname']
+LOGLEVEL_ALLOWED: ['INFO','ERROR','DEBUG','WARNING']
+SQLITE_CONFIG: 
+  connect: 'sqlite:///test.db'
